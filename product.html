@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — Pratikal</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .pd-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 18px 80px;
+    }
+    .pd-grid {
+      display: grid;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (min-width: 860px) {
+      .pd-grid {
+        grid-template-columns: 1.05fr 1fr;
+        gap: 40px;
+      }
+    }
+    .pd-gallery {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
+    .pd-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .pd-gallery .ph {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--muted);
+      background: #1a2430;
+    }
+    .pd-info .cat {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .pd-info h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+    .pd-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .pd-desc {
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      white-space: pre-wrap;
+    }
+    .pd-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .pd-meta span {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .pd-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    @media (min-width: 860px) {
+      .pd-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .pd-actions .btn { flex: 1; min-width: 140px; }
+    }
+    .pd-qty {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .pd-qty button {
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: var(--bg);
+      color: #e8eef4;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .pd-qty span {
+      min-width: 40px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .pd-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      transition: 0.2s;
+    }
+    .pd-back:hover { color: var(--accent); }
+    .pd-loading, .pd-error {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+    }
+    .related { margin-top: 56px; }
+  </style>
+</head>
+<body>
+<div class="admin-bar" id="adminBar">You are admin — <a href="admin/index.html">Admin</a></div>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Prati<em>kal</em></a>
+    <nav class="nav-links">
+      <a href="shop.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="profile.html">Account</a>
+    </nav>
+    <div class="nav-icons">
+      <span class="user-chip" id="userChip" style="display:none"></span>
+      <a class="icon-btn" href="profile.html">👤</a>
+      <a class="icon-btn" href="cart.html">🛒<span class="cart-badge">0</span></a>
+      <button class="hamburger" id="menuBtn" type="button"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="shop.html">Shop</a>
+    <a href="cart.html">Cart</a>
+    <a href="profile.html">Account</a>
+  </div>
+</header>
+
+<div class="pd-wrap">
+  <div id="pdRoot">
+    <div class="pd-loading">Loading product…</div>
+  </div>
+</div>
+
+<a class="floating-wa" href="https://wa.me/2347053326235" target="_blank" rel="noopener">💬</a>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+var qty = 1;
+var product = null;
+
+function getId() {
+  var q = new URLSearchParams(location.search);
+  return q.get('id') || '';
+}
+
+function findProduct(id, list) {
+  return list.find(function (p) { return p.id === id; }) || null;
+}
+
+function render(p) {
+  product = p;
+  document.title = p.name + ' — Pratikal';
+  var img = p.imageUrl
+    ? '<img src="' + Store.escapeHtml(p.imageUrl) + '" alt="' + Store.escapeHtml(p.name) + '">'
+    : '<div class="ph">▣</div>';
+  var desc = (p.description || 'No description yet.').trim();
+  var waMsg = encodeURIComponent('Hi Pratikal, I want to order: ' + p.name + ' (' + Store.money(p.price) + ')');
+
+  document.getElementById('pdRoot').innerHTML =
+    '<a class="pd-back" href="shop.html">← Back to shop</a>' +
+    '<div class="pd-grid">' +
+      '<div class="pd-gallery">' + img + '</div>' +
+      '<div class="pd-info">' +
+        '<div class="cat">' + Store.escapeHtml(p.category || 'General') + '</div>' +
+        '<h1>' + Store.escapeHtml(p.name) + '</h1>' +
+        '<div class="pd-price">' + Store.money(p.price) + '</div>' +
+        '<div class="pd-meta">' +
+          '<span>' + Store.escapeHtml(p.category || 'General') + '</span>' +
+          '<span>In stock</span>' +
+          '<span>Lagos delivery</span>' +
+        '</div>' +
+        '<div class="pd-desc">' + Store.escapeHtml(desc) + '</div>' +
+        '<div class="pd-qty">' +
+          '<button type="button" id="qMinus">−</button>' +
+          '<span id="qVal">1</span>' +
+          '<button type="button" id="qPlus">+</button>' +
+        '</div>' +
+        '<div class="pd-actions">' +
+          '<button type="button" class="btn btn-accent" id="addCart">Add to cart</button>' +
+          '<button type="button" class="btn btn-outline" id="orderNow">Order now</button>' +
+          '<a class="btn btn-outline" href="https://wa.me/' + APP.whatsapp + '?text=' + waMsg + '" target="_blank" rel="noopener">WhatsApp order</a>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="related">' +
+      '<div class="section-label">More from the store</div>' +
+      '<h2 style="font-family:Syne,sans-serif;font-size:1.4rem;margin:8px 0 18px;">You may also like</h2>' +
+      '<div class="product-grid" id="relatedGrid"></div>' +
+    '</div>';
+
+  document.getElementById('qMinus').onclick = function () {
+    if (qty > 1) { qty--; document.getElementById('qVal').textContent = qty; }
+  };
+  document.getElementById('qPlus').onclick = function () {
+    qty++; document.getElementById('qVal').textContent = qty;
+  };
+  document.getElementById('addCart').onclick = function () {
+    Store.addToCart(product, qty);
+  };
+  document.getElementById('orderNow').onclick = function () {
+    Store.addToCart(product, qty);
+    location.href = 'cart.html';
+  };
+
+  var related = Store.getProducts().filter(function (x) { return x.id !== p.id; }).slice(0, 3);
+  Store.renderProductGrid(document.getElementById('relatedGrid'), related);
+}
+
+Store.init({
+  loadProducts: true,
+  onProducts: function (list) {
+    var id = getId();
+    var p = findProduct(id, list);
+    if (!p) {
+      document.getElementById('pdRoot').innerHTML =
+        '<div class="pd-error"><p>Product not found.</p><a class="btn btn-accent" href="shop.html" style="margin-top:16px;">Back to shop</a></div>';
+      return;
+    }
+    render(p);
+  }
+});
+</script>
+</body>
+</html>

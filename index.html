@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pratikal — Shop smart. Pay easy.</title>
+  <meta name="description" content="Pratikal — mixed products online store. Shop and pay online. Lagos.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="admin-bar" id="adminBar">
+  You are admin — <a href="admin/index.html">Open admin panel</a>
+</div>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Prati<em>kal</em></a>
+    <nav class="nav-links">
+      <a href="shop.html">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="admin/index.html" data-admin-only style="display:none">Admin</a>
+    </nav>
+    <div class="nav-icons">
+      <span class="user-chip" id="userChip" style="display:none"></span>
+      <a class="icon-btn" id="profileBtn" href="profile.html" title="Account">👤</a>
+      <a class="icon-btn" href="cart.html" title="Cart">🛒<span class="cart-badge">0</span></a>
+      <button class="hamburger" id="menuBtn" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="shop.html">Shop</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="profile.html">Account</a>
+    <a href="cart.html">Cart</a>
+    <a href="admin/index.html" data-admin-only style="display:none">Admin</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Mixed products · Lagos</div>
+    <h1>Shop smart.<br><span>Pay easy.</span></h1>
+    <p>Everyday products in one place. Browse, add to cart, and pay securely online.</p>
+    <div class="hero-actions">
+      <a class="btn btn-accent" href="shop.html">Shop now</a>
+      <a class="btn btn-outline" href="https://wa.me/2347053326235" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>✦</span> Electronics <span>✦</span> Fashion <span>✦</span> Home <span>✦</span> Mixed products <span>✦</span> Paystack secure <span>✦</span> Lagos delivery
+    <span>✦</span> Electronics <span>✦</span> Fashion <span>✦</span> Home <span>✦</span> Mixed products <span>✦</span> Paystack secure <span>✦</span> Lagos delivery
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-label">Featured</div>
+  <h2>From the store</h2>
+  <p class="sub">Add to cart anytime. Login only when you checkout or open your profile.</p>
+  <div class="product-grid" id="homeProducts"></div>
+  <div style="text-align:center;margin-top:24px;">
+    <a class="btn btn-outline" href="shop.html">View all</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-label">Why Pratikal</div>
+  <h2>Built for real orders</h2>
+  <p class="sub">Cart, delivery address, and secure payment — not just a catalogue.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="num">01</div><h3>Full checkout</h3><p>Name, phone, street, city and state before Paystack — so you can deliver.</p></div>
+    <div class="feature-card"><div class="num">02</div><h3>Pay online</h3><p>Secure card payments with Paystack. Orders saved to your admin.</p></div>
+    <div class="feature-card"><div class="num">03</div><h3>Easy admin</h3><p>Add products with image links. Promote helpers to admin from the site.</p></div>
+  </div>
+</section>
+
+<section class="band-light" id="about">
+  <div class="section">
+    <div class="section-label">About Pratikal</div>
+    <h2>Practical shopping</h2>
+    <p class="sub">Mixed products for everyday needs — electronics, fashion, home and more. Order online and pay with card via Paystack.</p>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="section-label">Contact</div>
+  <h2>Get in touch</h2>
+  <p class="sub">
+    82, Alabioyo Street, Ejigbo, Lagos<br>
+    0705 332 6235 · mabayojetemilola@gmail.com
+  </p>
+  <a class="btn btn-accent" href="https://wa.me/2347053326235?text=Hi%20Pratikal" target="_blank" rel="noopener">Chat on WhatsApp</a>
+</section>
+
+<a class="floating-wa" href="https://wa.me/2347053326235" target="_blank" rel="noopener" title="WhatsApp">💬</a>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:8px;">Prati<em>kal</em></div>
+      <p>Shop smart. Pay easy. Mixed products · Lagos.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="cart.html">Cart</a>
+    </div>
+    <div>
+      <h4>Account</h4>
+      <a href="profile.html">Profile / Login</a>
+      <a href="admin/index.html" data-admin-only style="display:none">Admin</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="https://wa.me/2347053326235" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:mabayojetemilola@gmail.com">Email</a>
+      <p style="margin-top:8px;">82, Alabioyo Street, Ejigbo, Lagos</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© Pratikal</div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+if (location.search.indexOf('paid=1') >= 0) {
+  setTimeout(function () { Store.toast('Thank you — payment received!'); }, 400);
+}
+Store.init({
+  loadProducts: true,
+  onProducts: function (list) {
+    Store.renderProductGrid(document.getElementById('homeProducts'), list.slice(0, 3));
+  }
+});
+</script>
+</body>
+</html>
