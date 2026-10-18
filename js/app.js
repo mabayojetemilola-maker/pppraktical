@@ -197,7 +197,7 @@
     }
     el.innerHTML = list.map(function (p) {
       var img = p.imageUrl
-        ? '<img src="' + escapeHtml(p.imageUrl) + '" alt="">'
+        ? '<img src="' + escapeHtml(p.imageUrl) + '" alt="" onerror="this.outerHTML=\'<div class=ph>▣</div>\'">'
         : '<div class="ph">▣</div>';
       var wished = wishlist.indexOf(p.id) >= 0;
       var href = 'product.html?id=' + encodeURIComponent(p.id);
