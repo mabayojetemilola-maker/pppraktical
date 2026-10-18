@@ -37,7 +37,7 @@
     .pd-gallery .ph {
       width: 100%;
       height: 100%;
-      min-height: 280px;
+      min-height: 320px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -195,7 +195,7 @@ function render(p) {
   product = p;
   document.title = p.name + ' — Pratikal';
   var img = p.imageUrl
-    ? '<img src="' + Store.escapeHtml(p.imageUrl) + '" alt="' + Store.escapeHtml(p.name) + '">'
+    ? '<img src="' + Store.escapeHtml(p.imageUrl) + '" alt="' + Store.escapeHtml(p.name) + '" onerror="this.style.display=\'none\';this.parentNode.innerHTML=\'<div class=ph>▣</div>\';">'
     : '<div class="ph">▣</div>';
   var desc = (p.description || 'No description yet.').trim();
   var waMsg = encodeURIComponent('Hi Pratikal, I want to order: ' + p.name + ' (' + Store.money(p.price) + ')');
@@ -247,7 +247,12 @@ function render(p) {
   };
 
   var related = Store.getProducts().filter(function (x) { return x.id !== p.id; }).slice(0, 3);
-  Store.renderProductGrid(document.getElementById('relatedGrid'), related);
+  var grid = document.getElementById('relatedGrid');
+  if (!related.length) {
+    grid.innerHTML = '<p class="empty-note">No other products yet. Add more in Admin and they will show here.</p>';
+  } else {
+    Store.renderProductGrid(grid, related);
+  }
 }
 
 Store.init({
